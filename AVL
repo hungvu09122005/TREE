@@ -1,0 +1,126 @@
+  #include <iostream>
+
+using namespace std;
+
+struct AVLNode 
+{
+    char balTree;
+    int key;
+    AVLNode* pLeft;
+    AVLNode* pRight;
+};
+
+struct AVLTree 
+{
+    AVLNode* AVLRoot;
+};
+
+/*
+- khi cay lech trai thi dung L - L
+- khi cay lech phai thi dung L - R or (R - R && R - L)
+*/
+
+void rotateLL (AVLNode* node) // quay don L - L
+{
+    AVLNode* tmp = node->pLeft;
+    node->pLeft = tmp->pRight;
+    tmp->pRight = node;
+
+    switch (tmp->balTree)
+    {
+        case '-':
+            node->balTree = '0';
+            tmp->balTree = '0';
+            break;
+        case '0':
+            node->balTree = '-';
+            tmp->balTree = '+';
+            break;
+    }
+
+    node = tmp;
+}
+
+void rotateLR (AVLNode* node)
+{
+    AVLNode* tmp_1 = node->pLeft;
+    AVLNode* tmp_2 = tmp_1->pRight;
+    node->pLeft = tmp_2->pRight;
+    tmp_2->pRight = node;
+    tmp_1->pRight = tmp_2->pLeft;
+    tmp_2->pLeft = tmp_1;
+
+    switch (tmp_2->balTree)
+    {
+        case '+':
+            node->balTree = '+';
+            tmp_1->balTree = '0';
+            break;
+        case '0':
+            node->balTree = '0';
+            tmp_1->balTree = '0';
+            break;
+        case '-':
+            node->balTree = '0';
+            tmp_1->balTree = '-';
+            break;
+    }
+
+    tmp_2->balTree = '0';
+    node = tmp_2;
+}
+
+void rotateRR (AVLNode* node)
+{
+    AVLNode* tmp = node->pRight;
+    node->pRight = tmp->pLeft;
+    tmp->pLeft   = node;
+
+    switch (tmp->balTree)
+    {
+        case '-':
+            node->balTree = '0';
+            tmp->balTree = '0';
+            break;
+        case '0':
+            node->balTree = '-';
+            tmp->balTree = '+';
+            break;
+    }
+
+    node = tmp;
+}
+
+void rotateRL (AVLNode* node)
+{
+    AVLNode* tmp_1 = node->pRight;
+    AVLNode* tmp_2 = tmp_1->pLeft;
+    node->pRight = tmp_2->pLeft;
+    tmp_2->pRight = node;
+    tmp_1->pLeft = tmp_2->pRight;
+    tmp_2->pRight = tmp_1;
+
+    switch (tmp_2->balTree)
+    {
+        case '+':
+            node->balTree = '-';
+            tmp_1->balTree = '0';
+            break;
+        case '0':
+            node->balTree = '0';
+            tmp_1->balTree = '0';
+            break;
+        case '-':
+            node->balTree = '0';
+            tmp_1->balTree = '+';
+            break;
+    }
+
+    tmp_2->balTree = '0';
+    node = tmp_2;
+}
+
+int main ()
+{
+    return 0;
+}
